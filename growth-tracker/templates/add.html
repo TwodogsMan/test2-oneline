@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}添加成长记录{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>✨ 添加成长记录</h1>
+    <p class="subtitle">记录今天值得纪念的瞬间</p>
+</div>
+
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data" class="record-form">
+        <div class="form-group">
+            <label for="title">📝 标题 <span class="required">*</span></label>
+            <input type="text" id="title" name="title"
+                   placeholder="例如：第一次走路、小学毕业..."
+                   maxlength="200" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date">📅 日期 <span class="required">*</span></label>
+            <input type="date" id="date" name="date"
+                   value="{{ today }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">💬 描述</label>
+            <textarea id="description" name="description" rows="5"
+                      placeholder="写下这一刻的故事..."
+                      maxlength="5000"></textarea>
+            <div class="char-count"><span id="charCount">0</span>/5000</div>
+        </div>
+
+        <div class="form-group">
+            <label>🖼️ 照片</label>
+            <div class="file-upload-area" id="photoUploadArea">
+                <div class="upload-placeholder">
+                    <span class="upload-icon">📷</span>
+                    <p>点击或拖拽上传照片</p>
+                    <p class="upload-hint">支持 JPG、PNG、GIF、WebP 格式</p>
+                </div>
+                <input type="file" name="photos" id="photos"
+                       accept="image/jpeg,image/png,image/gif,image/webp"
+                       multiple
+                       class="file-input">
+            </div>
+            <div class="preview-grid" id="photoPreview"></div>
+        </div>
+
+        <div class="form-group">
+            <label>📄 文档</label>
+            <div class="file-upload-area" id="docUploadArea">
+                <div class="upload-placeholder">
+                    <span class="upload-icon">📄</span>
+                    <p>点击或拖拽上传文档</p>
+                    <p class="upload-hint">支持 PDF、DOC、DOCX、TXT、MD 格式</p>
+                </div>
+                <input type="file" name="documents" id="documents"
+                       accept=".pdf,.doc,.docx,.txt,.md"
+                       multiple
+                       class="file-input">
+            </div>
+            <div class="doc-list" id="docPreview"></div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">取消</a>
+            <button type="submit" class="btn btn-primary">💾 保存记录</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// 设置今天的日期
+document.getElementById('date').value = new Date().toISOString().split('T')[0];
+</script>
+{% endblock %}

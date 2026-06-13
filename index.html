@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人介绍 - 张三</title>
+    <style>
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent2: #818cf8;
+            --border: #334155;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a { color: var(--accent); text-decoration: none; transition: color 0.3s; }
+        a:hover { color: var(--accent2); }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 64px;
+        }
+
+        nav .logo { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav ul li a { color: var(--text-muted); font-weight: 500; font-size: 0.95rem; }
+        nav ul li a:hover { color: var(--text); }
+
+        /* ===== Hero ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 6rem 2rem 4rem;
+        }
+
+        .hero .avatar {
+            width: 140px; height: 140px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; margin: 0 auto 2rem;
+            box-shadow: 0 0 60px rgba(56, 189, 248, 0.3);
+        }
+
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero .subtitle { font-size: 1.3rem; color: var(--text-muted); margin-bottom: 2rem; }
+        .hero .cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-block; padding: 0.75rem 2rem; border-radius: 50px;
+            font-weight: 600; font-size: 1rem; cursor: pointer; border: none;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(56, 189, 248, 0.4); color: #fff; }
+        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: var(--bg); }
+
+        /* ===== Sections ===== */
+        section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+        .section-title {
+            font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 3rem;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 60px; height: 4px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            margin: 0.75rem auto 0; border-radius: 2px;
+        }
+
+        /* ===== About ===== */
+        .about-content {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+        }
+        .about-text p { color: var(--text-muted); margin-bottom: 1rem; font-size: 1.05rem; }
+        .about-text p:last-child { margin-bottom: 0; }
+
+        .info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        }
+        .info-item {
+            background: var(--bg-card); padding: 1.25rem; border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .info-item .label { font-size: 0.85rem; color: var(--text-muted); }
+        .info-item .value { font-size: 1.1rem; font-weight: 600; margin-top: 0.25rem; }
+
+        /* ===== Skills ===== */
+        .skills-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card); padding: 2rem; border-radius: 16px;
+            border: 1px solid var(--border); text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .skill-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
+
+        .skill-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .skill-card h3 { margin-bottom: 0.75rem; }
+        .skill-card .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem; }
+        .tag {
+            background: rgba(56, 189, 248, 0.1); color: var(--accent);
+            padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500;
+        }
+
+        /* ===== Timeline ===== */
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px; background: var(--border);
+        }
+
+        .timeline-item { position: relative; margin-bottom: 2.5rem; padding-left: 2rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -2.45rem; top: 0.4rem;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--accent); border: 3px solid var(--bg);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .timeline-item .date {
+            font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 0.25rem;
+        }
+        .timeline-item h3 { font-size: 1.2rem; margin-bottom: 0.25rem; }
+        .timeline-item .org { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .timeline-item p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* ===== Projects ===== */
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-card); border-radius: 16px; overflow: hidden;
+            border: 1px solid var(--border); transition: transform 0.3s;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        .project-card .cover {
+            height: 180px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex; align-items: center; justify-content: center; font-size: 3rem;
+        }
+        .project-card .body { padding: 1.5rem; }
+        .project-card h3 { margin-bottom: 0.5rem; }
+        .project-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+        .project-card .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        /* ===== Contact ===== */
+        #contact { text-align: center; }
+        .contact-links { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+        .contact-link {
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            background: var(--bg-card); padding: 2rem; border-radius: 16px;
+            border: 1px solid var(--border); min-width: 140px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .contact-link:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
+        .contact-link .icon { font-size: 2rem; }
+        .contact-link span { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ===== Footer ===== */
+        footer {
+            text-align: center; padding: 2rem; color: var(--text-muted);
+            border-top: 1px solid var(--border); font-size: 0.9rem;
+        }
+
+        /* ===== Scroll animation ===== */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            .hero h1 { font-size: 2rem; }
+            .about-content { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="logo">👨‍💻 张三</div>
+    <ul>
+        <li><a href="#about">关于我</a></li>
+        <li><a href="#skills">技能</a></li>
+        <li><a href="#experience">经历</a></li>
+        <li><a href="#projects">项目</a></li>
+        <li><a href="#contact">联系</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+    <div>
+        <div class="avatar">👋</div>
+        <h1>你好，我是 <span>张三</span></h1>
+        <p class="subtitle">全栈开发工程师 · 开源爱好者 · 终身学习者</p>
+        <div class="cta">
+            <a href="#projects" class="btn btn-primary">查看我的作品</a>
+            <a href="#contact" class="btn btn-outline">联系我</a>
+        </div>
+    </div>
+</header>
+
+<!-- About -->
+<section id="about">
+    <h2 class="section-title reveal">关于我</h2>
+    <div class="about-content reveal">
+        <div class="about-text">
+            <p>
+                我是一名拥有 6 年经验的全栈开发工程师，目前居住在上海。
+                热衷于使用现代 Web 技术构建优雅、高性能的应用程序。
+            </p>
+            <p>
+                我坚信代码的质量决定产品的质量。在日常工作中，我注重代码的可维护性、
+                测试覆盖率和用户体验。同时我也是开源社区的活跃贡献者，
+                参与维护多个开源项目。
+            </p>
+            <p>
+                工作之余，我喜欢阅读技术博客、参加 Hackathon，也会写一些技术文章
+                分享自己的经验和见解。偶尔也会去健身房或者弹弹吉他放松自己。
+            </p>
+        </div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="label">📍 所在地</div>
+                <div class="value">中国 · 上海</div>
+            </div>
+            <div class="info-item">
+                <div class="label">💼 当前职位</div>
+                <div class="value">高级前端工程师</div>
+            </div>
+            <div class="info-item">
+                <div class="label">🎓 学历</div>
+                <div class="value">计算机科学 硕士</div>
+            </div>
+            <div class="info-item">
+                <div class="label">📧 邮箱</div>
+                <div class="value">zhangsan@example.com</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills -->
+<section id="skills">
+    <h2 class="section-title reveal">专业技能</h2>
+    <div class="skills-grid reveal">
+        <div class="skill-card">
+            <div class="icon">🎨</div>
+            <h3>前端开发</h3>
+            <p>构建响应式、交互流畅的用户界面</p>
+            <div class="tags">
+                <span class="tag">React</span><span class="tag">Vue</span><span class="tag">TypeScript</span>
+                <span class="tag">Next.js</span><span class="tag">Tailwind CSS</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <div class="icon">⚙️</div>
+            <h3>后端开发</h3>
+            <p>设计高性能、可扩展的 API 服务</p>
+            <div class="tags">
+                <span class="tag">Node.js</span><span class="tag">Python</span><span class="tag">Go</span>
+                <span class="tag">PostgreSQL</span><span class="tag">Redis</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <div class="icon">☁️</div>
+            <h3>DevOps & 云</h3>
+            <p>持续集成、容器化与云原生部署</p>
+            <div class="tags">
+                <span class="tag">Docker</span><span class="tag">K8s</span><span class="tag">AWS</span>
+                <span class="tag">CI/CD</span><span class="tag">Terraform</span>
+            </div>
+        </div>
+        <div class="skill-card">
+            <div class="icon">🤖</div>
+            <h3>AI & 数据</h3>
+            <p>LLM 应用开发与数据分析</p>
+            <div class="tags">
+                <span class="tag">LangChain</span><span class="tag">RAG</span><span class="tag">Pandas</span>
+                <span class="tag">Agent</span><span class="tag">Vector DB</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience -->
+<section id="experience">
+    <h2 class="section-title reveal">工作经历</h2>
+    <div class="timeline reveal">
+        <div class="timeline-item">
+            <div class="date">2023.03 — 至今</div>
+            <h3>高级前端工程师</h3>
+            <div class="org">ABC 科技有限公司 · 上海</div>
+            <p>主导公司核心产品的前端架构重构，从 jQuery 迁移到 React + TypeScript 技术栈。搭建了组件库和设计系统，将前端开发效率提升了 40%。引入 E2E 测试体系，线上 Bug 率下降 60%。</p>
+        </div>
+        <div class="timeline-item">
+            <div class="date">2020.07 — 2023.02</div>
+            <h3>全栈开发工程师</h3>
+            <div class="org">XYZ 互联网公司 · 杭州</div>
+            <p>负责电商平台订单系统和支付模块的全栈开发。使用 Node.js + React 技术栈，日处理订单量 10W+。优化数据库查询和缓存策略，API 响应时间从 800ms 降至 120ms。</p>
+        </div>
+        <div class="timeline-item">
+            <div class="date">2018.09 — 2020.06</div>
+            <h3>初级前端开发</h3>
+            <div class="org">DEF 创业公司 · 北京</div>
+            <p>作为团队早期成员参与公司核心产品的从零开发。负责用户端和管理后台的前端开发，快速迭代产品功能，帮助公司在一年内获得 10 万用户。</p>
+        </div>
+    </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+    <h2 class="section-title reveal">开源项目</h2>
+    <div class="projects-grid reveal">
+        <div class="project-card">
+            <div class="cover">📝</div>
+            <div class="body">
+                <h3>Notion CLI</h3>
+                <p>一个命令行工具，可以在终端中管理 Notion 页面和数据库，支持 Markdown 导入导出。</p>
+                <div class="tags">
+                    <span class="tag">Rust</span><span class="tag">CLI</span><span class="tag">Notion API</span>
+                </div>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="cover">⚡</div>
+            <div class="body">
+                <h3>React Form Engine</h3>
+                <p>高性能的表单引擎库，支持复杂嵌套表单、动态字段和异步校验，Gzip 仅 5KB。</p>
+                <div class="tags">
+                    <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Zod</span>
+                </div>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="cover">🔍</div>
+            <div class="body">
+                <h3>CodeScan</h3>
+                <p>基于 AST 的代码质量检查工具，支持自定义规则，可集成到 CI/CD 流水线中。</p>
+                <div class="tags">
+                    <span class="tag">Python</span><span class="tag">AST</span><span class="tag">CI/CD</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+    <h2 class="section-title reveal">联系我</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1rem;" class="reveal">
+        如果你对我的工作感兴趣，或者想一起合作，欢迎随时联系！
+    </p>
+    <div class="contact-links reveal">
+        <a href="mailto:zhangsan@example.com" class="contact-link">
+            <span class="icon">📧</span>
+            <strong>Email</strong>
+            <span>zhangsan@example.com</span>
+        </a>
+        <a href="https://github.com" class="contact-link" target="_blank">
+            <span class="icon">🐙</span>
+            <strong>GitHub</strong>
+            <span>@zhangsan</span>
+        </a>
+        <a href="#" class="contact-link">
+            <span class="icon">💬</span>
+            <strong>微信</strong>
+            <span>zhangsan_wx</span>
+        </a>
+        <a href="https://linkedin.com" class="contact-link" target="_blank">
+            <span class="icon">🔗</span>
+            <strong>LinkedIn</strong>
+            <span>@zhangsan</span>
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 张三. All rights reserved. 用 ❤️ 和代码构建</p>
+</footer>
+
+<script>
+    // Scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth nav highlight
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('nav ul li a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const top = section.offsetTop - 100;
+            if (window.scrollY >= top) current = section.getAttribute('id');
+        });
+        navLinks.forEach(link => {
+            link.style.color = link.getAttribute('href') === '#' + current
+                ? '#38bdf8' : '#94a3b8';
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}成长时间线{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📅 成长时间线</h1>
+    <p class="subtitle">记录每一个珍贵的成长瞬间</p>
+</div>
+
+{% if records %}
+<div class="timeline">
+    {% for record in records %}
+    <a href="{{ url_for('view', record_id=record.id) }}" class="record-card">
+        <!-- 照片预览 -->
+        <div class="card-photos">
+            {% if record.photos %}
+            {% for photo in record.photos[:3] %}
+            <img src="{{ url_for('serve_photo', filename=photo) }}"
+                 alt="{{ record.title }}"
+                 class="card-photo"
+                 loading="lazy">
+            {% endfor %}
+            {% if record.photos|length > 3 %}
+            <div class="card-photo-more">+{{ record.photos|length - 3 }}</div>
+            {% endif %}
+            {% else %}
+            <div class="card-photo-placeholder">📷</div>
+            {% endif %}
+        </div>
+
+        <!-- 信息 -->
+        <div class="card-body">
+            <div class="card-date">{{ record.date }}</div>
+            <h3 class="card-title">{{ record.title }}</h3>
+            {% if record.description %}
+            <p class="card-desc">{{ record.description[:120] }}{% if record.description|length > 120 %}...{% endif %}</p>
+            {% endif %}
+            <div class="card-meta">
+                {% if record.photos %}
+                <span>🖼️ {{ record.photos|length }} 张照片</span>
+                {% endif %}
+                {% if record.documents %}
+                <span>📄 {{ record.documents|length }} 个文档</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- 分页 -->
+{% if total_pages > 1 %}
+<div class="pagination">
+    {% if page > 1 %}
+    <a href="{{ url_for('index', page=page-1) }}" class="page-btn">← 上一页</a>
+    {% endif %}
+    <span class="page-info">第 {{ page }} / {{ total_pages }} 页</span>
+    {% if page < total_pages %}
+    <a href="{{ url_for('index', page=page+1) }}" class="page-btn">下一页 →</a>
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">🌱</div>
+    <h2>还没有成长记录</h2>
+    <p>点击下方按钮，开始记录你的第一个成长瞬间吧！</p>
+    <a href="{{ url_for('add') }}" class="btn btn-primary btn-lg">+ 添加第一条记录</a>
+</div>
+{% endif %}
+{% endblock %}

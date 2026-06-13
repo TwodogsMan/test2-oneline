@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}编辑 - {{ record.title }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>✏️ 编辑记录</h1>
+    <p class="subtitle">修改成长记录的详细信息</p>
+</div>
+
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data" class="record-form">
+        <div class="form-group">
+            <label for="title">📝 标题 <span class="required">*</span></label>
+            <input type="text" id="title" name="title"
+                   value="{{ record.title }}"
+                   maxlength="200" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date">📅 日期 <span class="required">*</span></label>
+            <input type="date" id="date" name="date"
+                   value="{{ record.date }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">💬 描述</label>
+            <textarea id="description" name="description" rows="5"
+                      maxlength="5000">{{ record.description }}</textarea>
+            <div class="char-count"><span id="charCount">0</span>/5000</div>
+        </div>
+
+        <!-- 现有照片 -->
+        {% if record.photos %}
+        <div class="form-group">
+            <label>🖼️ 现有照片</label>
+            <div class="existing-files">
+                {% for photo in record.photos %}
+                <div class="existing-file-item">
+                    <img src="{{ url_for('serve_photo', filename=photo) }}"
+                         alt="{{ photo }}"
+                         class="existing-thumb">
+                    <label class="delete-check">
+                        <input type="checkbox" name="delete_photos" value="{{ photo }}">
+                        删除
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 添加新照片 -->
+        <div class="form-group">
+            <label>🖼️ 添加新照片</label>
+            <div class="file-upload-area" id="photoUploadArea">
+                <div class="upload-placeholder">
+                    <span class="upload-icon">📷</span>
+                    <p>点击或拖拽上传新照片</p>
+                    <p class="upload-hint">支持 JPG、PNG、GIF、WebP 格式</p>
+                </div>
+                <input type="file" name="photos" id="photos"
+                       accept="image/jpeg,image/png,image/gif,image/webp"
+                       multiple
+                       class="file-input">
+            </div>
+            <div class="preview-grid" id="photoPreview"></div>
+        </div>
+
+        <!-- 现有文档 -->
+        {% if record.documents %}
+        <div class="form-group">
+            <label>📄 现有文档</label>
+            <div class="existing-files">
+                {% for doc in record.documents %}
+                <div class="existing-file-item doc-existing">
+                    <span class="doc-name">📄 {{ doc }}</span>
+                    <label class="delete-check">
+                        <input type="checkbox" name="delete_documents" value="{{ doc }}">
+                        删除
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 添加新文档 -->
+        <div class="form-group">
+            <label>📄 添加新文档</label>
+            <div class="file-upload-area" id="docUploadArea">
+                <div class="upload-placeholder">
+                    <span class="upload-icon">📄</span>
+                    <p>点击或拖拽上传新文档</p>
+                    <p class="upload-hint">支持 PDF、DOC、DOCX、TXT、MD 格式</p>
+                </div>
+                <input type="file" name="documents" id="documents"
+                       accept=".pdf,.doc,.docx,.txt,.md"
+                       multiple
+                       class="file-input">
+            </div>
+            <div class="doc-list" id="docPreview"></div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ url_for('view', record_id=record.id) }}" class="btn btn-secondary">取消</a>
+            <button type="submit" class="btn btn-primary">💾 保存修改</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

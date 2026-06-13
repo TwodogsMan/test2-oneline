@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ record.title }} - 成长记录{% endblock %}
+
+{% block content %}
+<div class="record-detail">
+    <!-- 头部 -->
+    <div class="detail-header">
+        <div class="detail-date">{{ record.date }}</div>
+        <h1>{{ record.title }}</h1>
+        {% if record.description %}
+        <p class="detail-desc">{{ record.description }}</p>
+        {% endif %}
+        <div class="detail-actions">
+            <a href="{{ url_for('edit', record_id=record.id) }}" class="btn btn-secondary">✏️ 编辑</a>
+            <button class="btn btn-danger" onclick="confirmDelete({{ record.id }})">🗑️ 删除</button>
+        </div>
+    </div>
+
+    <!-- 照片展示 -->
+    {% if record.photos %}
+    <div class="detail-section">
+        <h2>🖼️ 照片 ({{ record.photos|length }})</h2>
+        <div class="photo-gallery">
+            {% for photo in record.photos %}
+            <div class="gallery-item" onclick="openLightbox('{{ url_for('serve_photo', filename=photo) }}')">
+                <img src="{{ url_for('serve_photo', filename=photo) }}"
+                     alt="照片 {{ loop.index }}"
+                     loading="lazy">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 文档列表 -->
+    {% if record.documents %}
+    <div class="detail-section">
+        <h2>📄 文档 ({{ record.documents|length }})</h2>
+        <div class="document-list">
+            {% for doc in record.documents %}
+            <a href="{{ url_for('serve_document', filename=doc) }}"
+               class="doc-item"
+               download>
+                <span class="doc-icon">📄</span>
+                <span class="doc-name">{{ doc }}</span>
+                <span class="doc-download">⬇️ 下载</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 返回 -->
+    <div class="detail-back">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">← 返回时间线</a>
+    </div>
+</div>
+
+<!-- 照片灯箱 -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img src="" alt="照片预览" id="lightboxImg">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmDelete(recordId) {
+    if (confirm('确定要删除这条记录吗？此操作不可撤销。')) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/record/' + recordId + '/delete';
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}
